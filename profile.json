@@ -1,0 +1,32 @@
+{
+  "log": {"loglevel": "none"},
+  "dns": {"tag": "dns_inbound", "servers": ["1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001"], "queryStrategy": "UseIP"},
+  "inbounds": [{
+    "tag": "__TAG__", "port": 443, "listen": "0.0.0.0", "protocol": "vless",
+    "settings": {"clients": [], "decryption": "none"},
+    "sniffing": {"enabled": true, "destOverride": ["http", "tls", "quic"]},
+    "streamSettings": {"network": "raw", "security": "reality", "realitySettings": {
+      "xver": 1, "target": "/dev/shm/nginx.sock", "shortIds": [""],
+      "privateKey": "__PRIVATE_KEY__", "fingerprint": "firefox",
+      "serverNames": ["__DOMAIN__"], "minClientVer": "0.0.0"
+    }}
+  }],
+  "outbounds": [
+    {"tag": "DIRECT", "protocol": "freedom"},
+    {"tag": "BLOCK", "protocol": "blackhole"},
+    {"tag": "warp", "protocol": "socks", "settings": {"servers": [{"port": 40000, "address": "127.0.0.1"}]}}
+  ],
+  "routing": {"rules": [
+    {"type": "field", "domain": [
+      "geosite:yandex", "geosite:vk", "geosite:mailru", "geosite:category-gov-ru",
+      "geosite:category-bank-ru", "geosite:category-retail-ru", "geosite:category-travel-ru",
+      "geosite:category-ecommerce-ru", "geosite:mailru-group", "geosite:rutube",
+      "geosite:kinopoisk", "geosite:avito", "domain:mts.ru", "domain:mts.by",
+      "domain:mtsmobile.ru", "domain:kion.ru", "domain:megafon.ru", "domain:beeline.ru",
+      "domain:tele2.ru", "domain:t2.ru", "domain:rt.ru", "domain:domru.ru",
+      "domain:ertelecom.ru", "domain:doubleclick.net", "geosite:category-ads-all",
+      "domain:rustore.ru"
+    ], "outboundTag": "BLOCK"},
+    {"type": "field", "domain": ["regexp:^([a-zA-Z0-9-]+\\.)+(ru|su|xn--p1ai)$", "geosite:google"], "outboundTag": "warp"}
+  ]}
+}
