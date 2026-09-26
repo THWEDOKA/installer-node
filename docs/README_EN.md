@@ -21,8 +21,8 @@ The routing follows the supplied template. The block rule uses the defined `BLOC
 ## Install
 
 ```bash
-git clone https://github.com/x1roko/node-setup.git
-cd node-setup
+git clone https://github.com/THWEDOKA/installer-node.git
+cd installer-node
 sudo ./install.sh
 ```
 
